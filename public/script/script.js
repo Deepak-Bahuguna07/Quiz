@@ -11,7 +11,6 @@ const main = () => {
   const container = document.querySelector("#container");
   const question = fetchData();
   const data = generateForm(question);
-  console.log(data)
   container.appendChild(data);
 
   const form = document.querySelector("form");
