@@ -1,23 +1,26 @@
 import { generateForm } from "./generateHtml.js";
 
-const fetchData = () => ({
-  question: "who is the captain of indian cricket team?",
-  options: ["sky", "mahi", "virat", "hardik"],
-  questionNo: 1,
-})
+const submitResponse = async (res) =>
+  await fetch("/response", { method: "post", body: res })
 
-
-const main = () => {
+const main = async () => {
   const container = document.querySelector("#container");
-  const question = fetchData();
-  const data = generateForm(question);
-  container.appendChild(data);
+  const data = await fetch("/question");
+  const question = await data.json();
+  const html = generateForm(question);
+  container.appendChild(html);
 
   const form = document.querySelector("form");
-  form.addEventListener("submit", (dets) => {
+  form.addEventListener("submit", async (dets) => {
     dets.preventDefault();
-    console.log("hello");
-    console.log(dets);
+    const fd = new FormData(form);
+    const c = [...fd.entries()];
+    const data = await submitResponse(c[0][1]);
+
+    const nextQuestion = await data.json();
+    const html = generateForm(nextQuestion);
+    container.innerHTML = '';
+    container.appendChild(html);
   })
 }
 

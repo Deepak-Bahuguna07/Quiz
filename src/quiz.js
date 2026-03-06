@@ -6,18 +6,22 @@ export class Quiz {
   constructor(questions) {
     this.#current = 0;
     this.#questions = questions;
-    this.response = [];
+    this.#response = [];
   }
 
-  current() {
-    return this.#current;
+  getCurrentQuestion() {
+    return this.#questions[this.#current];
   }
 
   next() {
     this.#current += 1;
   }
 
-  response(res) {
+  postResponse(res) {
     this.#response.push(res);
+  }
+
+  getResponses() {
+    return this.#response;
   }
 }
